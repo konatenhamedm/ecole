@@ -1,0 +1,23 @@
+{% macro remiseActe(remiseActe) %}
+
+    <div class="row">
+        <div class="col-md-4 ">
+            {{ form_row(remiseActe.date,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Titre'}}) }}
+        </div>
+        <div class="col-md-4 ">
+            {{ form_row(remiseActe.path,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Image'}}) }}
+        </div>
+        {% if remiseActe.children.path.vars.data %}
+            <div class="col-md-1 ">
+                <a class="btn btn-dark" target="_blank" href="{{ asset('uploads/images/' ~ remiseActe.children.path.vars.data) }}" download> <i class="fe fe-upload"></i>
+                    <i class="fe fe-folder"></i></a>
+                {#<button type="button" class="btn btn-dark">Upload</button>#}
+            </div>
+        {% endif %}
+        <div class="col-md-1  supprimer">
+
+        </div>
+
+    </div>
+
+{% endmacro remiseActe %}

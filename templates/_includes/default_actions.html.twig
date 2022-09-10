@@ -1,0 +1,65 @@
+
+
+
+
+    {% set default_class = options.default_class %}
+    {% set actions = options.actions %}
+    {% for key, link in actions %}
+        {% if link is iterable %}
+          
+            {% set attrs = link.attrs|default({}) %}
+            {% set class = attrs.class|default(' ') ~ ' ' ~ default_class %}
+            {% set modal = link.ajax is defined ? link.ajax : true %}
+            {% set display_action = true %}
+            {% if link.render is defined %}
+                {% set _render = link.render %}
+                {% if _render is iterable %}
+                    {% set func = _render[0] %}
+                    {% set func_args = _render[1] %}
+                {% else %}
+                    {% set func = _render %}
+                    {% set func_args = null %}
+                {% endif %}
+                {% set display_action = func.execute(func_args) %}
+            {% endif %}
+          
+           
+            {% if display_action %}
+                {% set has_icon = link.icon starts with '%icon%' ? true: false %}
+                {% set default_target = link.target|default(options.target|default('#exampleModalSizeLg2')) %}
+                {% set get_icon  = has_icon ? "<span class='svg-icon svg-icon-md'><i class=' " ~ link.icon | replace({'%icon%': ''}) ~ "'></i></span>" : link.icon %}
+                {% if link.url is not iterable %}
+                <a href="{{ link.url }}" class="{{ class }}" {% if modal %}data-bs-toggle="modal" data-bs-target="{{ default_target }}"{% endif %}
+                    {% for attr, val in attrs %}
+                        {% if attr != 'class' %}
+                            {{ attr }}="{{ val }}"
+                        {% endif %}
+                    {% endfor %}
+                >
+                    {% if has_icon %}
+                        <span class='svg-icon svg-icon-md'><i class='{{ link.icon | replace({'%icon%': ''}) }}'></i></span>
+                    {% else %}
+                        <span class="pl-2 pr-2">{{ link.icon | raw }}</span>
+                    {% endif %}
+                </a>
+                {% elseif link.url | length %}
+                    <div class="dropdown">
+                        <button class="{{ attrs.class }}" type="button" id="{{ link.id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ get_icon | raw }}
+                            {{ link.label }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="{{ link.id }}">
+                            {% for _item in link.url %}
+                                {% set _target = _item.target|default(default_target) %}
+                                <a class="dropdown-item" href="{{ _item.url }}" {% if modal %}data-toggle="modal" data-target="{{ _target }}"{% endif %}>
+                                    {{ _item.label }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% else %}
+        {% endif %}
+       
+    {% endfor %}

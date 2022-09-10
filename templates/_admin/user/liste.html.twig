@@ -1,0 +1,27 @@
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="grid" class="grid-dt-wrapper">Chargement....</div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block java %}
+    <script src="{{ asset('assets/js/datatable.js') }}"></script>
+    <script>
+        $(function() {
+
+            $('#grid').initDataTables({{ datatable_settings(datatable) }}, {
+                searching: true,
+                ajaxUrl: "{{ path('user_liste') }}",
+                language: {
+                    url:  asset_base_path + "/js/i18n/French.json"
+                },
+            });
+        });
+    </script>
+{% endblock %}

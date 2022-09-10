@@ -1,0 +1,13 @@
+{% macro identification(identification) %}
+    <div class="row">
+        <div class="col-md-6 ">
+            <label class="sr-onl">Acheteur</label>
+            {{ form_row(identification.acheteur,{'attr':{'class':'form-select form-control acheteur','placeholder':'Acheteur'}}) }}
+        </div>
+        <div class="col-md-6">
+            <label class="sr-onl">Vendeur</label>
+            {{ form_row(identification.vendeur,{'attr':{'class':'form-select form-control vendeur','placeholder':'Vendeur'}}) }}
+        </div>
+
+    </div>
+{% endmacro identification %}

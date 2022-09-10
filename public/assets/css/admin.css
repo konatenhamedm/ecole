@@ -1,0 +1,39 @@
+.daterangepicker {
+    z-index: 9999;
+}
+
+.modal {
+    z-index: 9990;
+}
+
+.form-control {
+    border: 1px solid #cbcfd4;
+}
+
+.grid_row_actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.grid_row_actions .dropdown{
+    display: inline-block;
+}
+
+
+.sw-theme-dots>ul.step-anchor>li.is-current:not(.active)>a {
+
+}
+
+.sw-theme-dots>ul.step-anchor>li.is-current>a:before {
+    background:#69b1b8;
+}
+
+.modal-header {
+    background-color: var(--primary-bg-color);
+    color: #fff;
+}
+
+.modal-header .close {
+    color: #fff;
+}

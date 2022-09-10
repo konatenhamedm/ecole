@@ -1,0 +1,226 @@
+{% from '_admin/macros/document.html.twig' import image, versement %}
+
+{% block page_content %}
+    <div class="modal-header">
+        <h5 class="modal-title">MODIFICATION-{{ titre | upper  }}</h5>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <hr>
+    {% form_theme form 'bootstrap_5_layout.html.twig' %}
+    {{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+    <div class="modal-body form-body">
+        <div class="row">
+            <div class="col-md-12">
+                {{ include('_includes/ajax/response.html.twig') }}
+            </div>
+        </div>
+
+        <div class="col-lg-12 versement" id="versement" data-prototype="{{ versement(form.versements.vars.prototype)|e('html_attr') }}">
+
+            <div class="row">
+                <div class="col-md-6 ">
+                    {{ form_row(form.eleve) }}
+                </div>
+                <div class="col-md-6 ">
+                    {{ form_row(form.ahc) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12 ">
+                    {{ form_row(form.scolaritePersonne) }}
+                </div>
+            </div>
+            <div class="mb-4">
+                <div class="row">
+                    <div class="col-md-12"><h3 style="color: orangered">Liste des versements</h3></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" data-container=".versement-list" data-prototype=".versement" data-protoname="__workflow__" class="btn btn-sm btn-info add_line">
+                            AJOUTER UN VERSEMENT
+                        </a>
+                    </div>
+                </div><br>
+
+                <div class="row row-header mb-4">
+                    <div class="col-1 text-center ">
+                        N°
+                    </div>
+                    <div class="col-3 " style="margin-left: 10px">
+                       Date versement
+                    </div>
+                    <div class="col-3">
+                        Libellé
+                    </div>
+                    <div class="col-4">
+                        Montant
+                    </div>
+
+
+                </div>
+
+                <div class="versement-list col-md-12">
+                    {% for row in form.versements %}
+                        {{ versement(row|e) }}
+                    {% endfor %}
+                </div>
+
+            </div>
+
+
+
+
+    </div>
+
+    <div class="modal-footer">
+       <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button class="btn btn-primary btn-ajax">Valider</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('admin/assets/plugins/multipleselect/multiple-select.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/multipleselect/multi-select.js') }}"></script>
+    <script>
+               $('.libelle').attr('readonly', true)
+               $('.numero-etape').attr('readonly', true)
+              $(".versement-list .row-line").first().find('.montant').attr('readonly', true);
+              $(".versement-list .row-line").first().find('.date').attr('readonly', true);
+              $(".versement-list .row-line").first().find('.del-col').remove();
+
+        $(function () {
+            init_select2(null, null, '.form-body');
+
+
+               $('.no-auto').each(function () {
+                    const $this = $(this);
+                    const $id = $('#' + $this.attr('id'));
+                    init_date_picker($id,  'down', (start, e) => {
+                        //$this.val(start.format('DD/MM/YYYY'));
+                    }, null, null, false);
+
+                    $id.on('apply.daterangepicker', function (ev, picker) {
+                        $(this).val(picker.startDate.format('DD/MM/YYYY'));
+                    });
+                });
+
+            const $container_doc = $('.doc-list');
+            const $container_wk = $('.versement-list');
+            var index_doc = $container_doc.find('.row-line').length;
+            var index_wk = $container_wk.find('.row-line').length
+
+            const $addLink = $('.add_line');
+            $addLink.click(function(e) {
+                const $this  = $(this);
+                const proto_class = $this.attr('data-prototype');
+                const name = $this.attr('data-protoname');
+                const $container = $($this.attr('data-container'));
+                let max_etape = +$container.find('.row-line').last().find('.numero-etape').val();
+                if (isNaN(max_etape)) {
+                    max_etape = 0;
+                }
+
+                addLine($container, name, proto_class, max_etape);
+
+                //addDeleteLink($container);
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+            });
+            // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+            /*if (index == 0) {
+            addimputation($container);
+            } else {*/
+            if (index_doc > 0) {
+                $container_doc.children('.row-line').each(function() {
+                    const $this = $(this);
+                    addDeleteLink($this);
+                    $this.find("select").each(function() {
+                        const $this = $(this);
+                        init_select2($this, null, '.form-card');
+                    });
+
+
+
+
+                });
+
+
+            }
+
+            if (index_wk > 0) {
+                $container_wk.children('.row-line').each(function() {
+                    const $this = $(this);
+                    addDeleteLink($this);
+                });
+            }
+
+
+            // La fonction qui ajoute un formulaire Categorie
+            function addLine($container, name, proto_class, max_etape = null) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+
+                var $prototype = $($(proto_class).attr('data-prototype')
+                    .replace(new RegExp(name + 'label__', 'g'), 'Pièce ' + (name == '__workflow__' ? index_wk + 1 : index_doc + 1))
+                    .replace(new RegExp(name, 'g'), name == '__workflow__' ? index_wk : index_doc));
+
+
+                // On ajoute au prototype un lien pour pouvoir supprimer la prestation
+                addDeleteLink($prototype, name);
+                // On ajoute le prototype modifié à la fin de la balise <div>
+                $container.append($prototype);
+
+
+
+
+                if (name == '__workflow__') {
+                    index_wk++;
+
+                      $prototype.find('.numero-etape').val(max_etape + 1).attr('data-etape', max_etape + 1);
+                      $prototype.find('.libelle').val("Versement").attr('data-libelle',"Versement");
+                      $prototype.find('.libelle').attr('readonly', true)
+                      $prototype.find('.numero-etape').attr('readonly', true)
+                }
+
+            }
+
+
+            function addDeleteLink($prototype, name = null) {
+                // Création du lien
+                $deleteLink = $('<a href="#" class="btn btn-danger"><span class="fa fa-trash"></span></a>');
+                // Ajout du lien
+                $prototype.find(".del-col").append($deleteLink);
+
+
+
+                // Ajout du listener sur le clic du lien
+                $deleteLink.click(function(e) {
+                    const $parent = $(this).closest('.row-line');
+                    $parent.remove();
+
+                    if (name == '__document__') {
+                        if (index_doc > 0) {
+                            index_doc -= 1;
+                        }
+                    } else if (name == '__workflow__') {
+                        console.log( index_wk );
+                        if (index_wk > 0) {
+                            index_wk -= 1;
+                             $('.numero-etape').each(function (index, c) {
+
+                                $(this).val(index + 1);
+                            });
+                        }
+                    }
+                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                });
+            }
+        });
+        
+    </script>
+{% endblock %}

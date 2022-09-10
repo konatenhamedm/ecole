@@ -1,0 +1,68 @@
+{% extends '_admin/_includes/index.html.twig.twig' %}
+
+{% block titre %}{{ menu.getRoute }}{% endblock %}
+
+{% block page_content %}
+
+    {% set new = menu.getRoute %}
+    <!-- PAGE-HEADER -->
+    <div class="page-header" style="margin-top:-0.1rem">
+        <h1 class="page-title">{{ "Utilisateur" |capitalize }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('user') }}">LISTE DES TYPES CLIENTS</a></li>{#
+                <li class="breadcrumb-item active" aria-current="page">{{ "NOUVEAU CLIENT" | capitalize }}</li>#}
+            </ol>
+        </div>
+
+    </div>
+    <!-- PAGE-HEADER END -->
+    <!-- Row -->
+    <div class="row row-sm" style="margin-top:-1rem">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-md-10">
+                        <h3 class="card-title">{{ titre | capitalize }}</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-secondary bg-secondary-gradient offset-7"  href="{{ path('user_new') }}" data-bs-toggle="modal" data-bs-target="#extralargemodal">
+                            <i class="fe fe-plus"></i>Nouveau
+                        </a>
+                    </div>
+
+                </div>
+                <div class="card-body" id="tab-user">
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="grid-user" class="grid-dt-wrapper">Chargement....</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/datatable.js') }}"></script>
+    <script>
+        $(function() {
+            $('#grid-user').initDataTables({{ datatable_settings(datatable) }}, {
+                searching: true,
+                ajaxUrl: "{{ path('user') }}",
+                language: {
+                    url:  asset_base_path + "/js/i18n/French.json"
+                },
+            });
+        });
+    </script>
+
+{% endblock %}

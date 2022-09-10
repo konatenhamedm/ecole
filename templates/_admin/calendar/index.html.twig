@@ -1,0 +1,79 @@
+{% extends '_admin/_includes/index.html.twig' %}
+
+{% block titre %}{{ menu.getRoute }}{% endblock %}
+
+{% block page_content %}
+
+    {% set new = menu.getRoute %}
+    <!-- PAGE-HEADER -->
+    <div class="page-header" style="margin-top:-0.1rem">
+        <h1 class="page-title">{{ "évènements" |capitalize }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('calendar') }}">{{ "LISTE DES évènements" |capitalize }}</a></li>
+                {#<li class="breadcrumb-item active" aria-current="page">{{ "LISTE ACTES DE VENTE" | capitalize }}</li>#}
+            </ol>
+        </div>
+
+    </div>
+    <!-- PAGE-HEADER END -->
+    <!-- Row -->
+    <div class="row row-sm" style="margin-top:-1rem">
+
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-md-9">
+                        <h3 class="card-title">{{ titre | capitalize }}</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="float-end">
+                            <a class="btn btn-secondary bg-secondary-gradient offset-4"  href="{{ path('calendar_new') }}" data-bs-toggle="modal" data-bs-target="#extralargemodal">
+                                <i class="fe fe-plus"></i>Nouveau
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-menu-heading">
+                        <div class="tabs-menu">
+                            <!-- Tabs -->
+                            <ul class="nav panel-tabs panel-secondary" id="tab-calendar">
+                                {% for etat, lib in etats %}
+                                    {% set _url =  path('calendar_liste', {etat: etat}) %}
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {% if loop.index == 0 %}active{% endif %}" data-method="POST" data-bs-toggle="tab" href="#{{ etat }}" data-href="{{ _url }}">
+                                            <span class="nav-text">{{ lib }}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel-body tabs-menu-body">
+                        <div class="tab-content">
+                            {% for etat, lib in etats %}
+                                <div class="tab-pane fade {% if loop.index == 0 %}active show{% endif %}" id="{{ etat }}" role="tabpanel" aria-labelledby="{{ etat }}"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/tab-load.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            load_tab('tab-calendar');
+        });
+    </script>
+
+{% endblock %}
+
+

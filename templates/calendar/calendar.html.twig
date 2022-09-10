@@ -1,0 +1,164 @@
+{% extends '_admin/_includes/index.html.twig' %}
+
+{% block titre %}Notari | Agenda{% endblock %}
+
+{% block style %}
+    <link href="{{ asset('assets/HoldOn.min.css') }}" rel="stylesheet">
+{% endblock %}
+{% block page_content %}
+    <div class="page-header">
+        <h1 class="page-title">{{ "Agenda" |capitalize }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Gestion des rendez-vous</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ "Agenda" | capitalize }}</li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Liste des tous les rendez vous</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xl-3">
+                            <div id="external-events">
+                                <h4>Les événements</h4>
+                               {# <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-primary">
+                                    <div class="fc-event-main">My Event 1</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-secondary" data-class="bg-secondary">
+                                    <div class="fc-event-main">My Event 2</div>
+                                </div>#}
+                                {% for liste in listes %}
+                                    <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-warning" data-class="bg-warning">
+                                        <div class="fc-event-main">
+                                            <a href="{{ path('event_detaiils',{'id':liste.id }) }}"  data-bs-toggle="modal" data-bs-target="#largemodal">
+                                                <i class="fe fe-plus"></i>{{ liste.title }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {#<div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-success" data-class=" bg-info">
+                                    <div class="fc-event-main">My Event 4</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-danger" data-class="bg-danger">
+                                    <div class="fc-event-main">My Event 5</div>
+                                </div>#}
+                            </div>
+
+                        </div>
+                        <div class="col-md-12  col-xl-9">
+                           {# <div id='calendar2'></div>#}
+                            <div id="calendrier">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('admin/admin/js/jquery3.1.js') }}"></script>
+    <script src="{{ asset('assets/HoldOn.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+
+
+        window.onload =(e) => {
+
+
+            console.log(e)
+            let calendarElt = document.querySelector("#calendrier")
+            let calendar = new FullCalendar.Calendar(calendarElt,{
+                height: 600,
+                width: 700,
+                initialView: 'dayGridMonth',
+                locale: 'fr',
+                themeSystem: 'bootstrap5',
+                timeZone: 'Africa/west',
+                headerToolbar:{
+                    start :'prev,next today',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                eventRender: function(info) {
+                    console.log(info)
+                    var tooltip = new Tooltip(info.el, {
+                        title: info.event.extendedProps.description,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });
+                },
+                events: {{ data|raw }},
+                editable:true,
+                eventResizableFromStart:true,
+                eventClick: function(calEvent, jsEvent, view, resourceObj) {
+                    console.log(calEvent.event.title)
+
+                    $('.lancer').click();
+                    /*Open Sweet Alert*/
+                    swal({
+                        title: calEvent.title,//Event Title
+                        text: calEvent.event.title+" Commence le : "+calEvent.event.start.toLocaleDateString("fr")+` et prend fin le `+calEvent.event.end.toLocaleDateString("fr")+`\n avec pour objet\n `+calEvent.event.extendedProps.description,//Event Start Date
+                        icon: "success",
+                    });
+                }
+            });
+
+            /*   calendar.on('dateClick', function(info) {
+                   birthday = new Date();
+                   year = new Date(info.start).getFullYear();
+                   month = new Date(info.start).getMonth();
+                   day = new Date(info.start).getDate();
+                   //console.log(info);
+                   alert('clicked on ' + info.dateStr);
+               });*/
+            calendar.on('eventChange',(e)=>{
+                let url =  `/api/${e.event.id}/edit`
+                var options = {
+                    theme:"sk-rect",
+                    message:'some cool message for your user here ! Or where the logo is ! Your skills are the only limit. ',
+                    backgroundColor:"#1847B1",
+                    textColor:"white"
+                };
+
+                HoldOn.open(options);
+
+                let donnees = {
+                    "title":e.event.title,
+                    "description":e.event.extendedProps.description,
+                    "start":e.event.start,
+                    "end":e.event.end,
+                    "backgroundColor":e.event.backgroundColor,
+                    "borderColor":e.event.borderColor,
+                    "textColor":e.event.textColor,
+                    "allDay":e.event.allDay,
+                    "oldallDay":e.oldEvent.allDay,
+                }
+                let xhr = new XMLHttpRequest()
+                xhr.open("PUT",url)
+                xhr.send(JSON.stringify(donnees))
+                const myTimeout = setTimeout(myGreeting, 5000);
+                function myGreeting() {
+                    HoldOn.close();
+                }
+            });
+            $('.swal-text').css("text-align", "center")
+
+            calendar.render(function render(e) {
+                console.log(e)
+            });
+
+        }
+    </script>
+
+{% endblock %}
+

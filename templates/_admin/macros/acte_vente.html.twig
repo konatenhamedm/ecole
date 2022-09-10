@@ -1,0 +1,181 @@
+{% macro list_piece(piece, client) %}
+    <div class="row row-line">
+       
+        <div style="display:none">{{ form_row(piece.origine) }} {{ form_widget(piece.client) }}</div>
+        {% set is_deletable = piece.vars.value and not piece.vars.value.client %}
+        {% set lib_attrs = {} %}
+        {% set file_attrs = {} %}
+        {% set has_file  = piece.vars.value and piece.vars.value.fichier %}
+        {% if not is_deletable %}
+            {% set lib_attrs = lib_attrs|merge({attr: {readonly: 'readonly'}}) %}
+        {% endif %}
+        {% if has_file %}
+            {% set file_attrs = file_attrs|merge({'data-file': piece.vars.value.fichier.alt}) %}
+        {% endif %}
+        <div class="col-md-4">{{ form_row(piece.libDocument, lib_attrs) }}</div>
+        <div class="col-md-4">{{ form_row(piece.fichier, file_attrs) }}</div>
+        <div class="col-md-2">{{ form_row(piece.dateTransmission) }}</div>
+       
+        <div class="col-md-1 ">
+             {% if piece.vars.value and piece.vars.value.fichier is not null %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  piece.vars.value.fichier.id}) }}" download> 
+                <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i>
+            </a>
+            {% endif %}
+        </div>
+        <div class="col-md-1 del-col {% if not is_deletable %}no-action{% endif %}">
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro redaction(redaction) %}
+    <div class="row row-line">
+        <div class="col-md-1">{{ form_row(redaction.numVersion) }}</div>
+        <div class="col-md-3">{{ form_row(redaction.date) }}</div>
+        {% set file_attrs = {} %}
+        {% set has_file  = redaction.vars.value and redaction.vars.value.fichier %}
+        {% if has_file %}
+            {% set file_attrs = file_attrs|merge({'data-file': redaction.vars.value.fichier.alt}) %}
+        {% endif %}
+        <div class="col-md-6">{{ form_row(redaction.fichier, file_attrs) }}</div>
+        
+        <div class="col-md-1">
+            {% if has_file %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  redaction.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+                  {% endif %}
+        </div>
+      
+        <div class="col-md-1 del-col">
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro identification(identification) %}
+    <div class="row">
+        <div class="col-md-6 ">
+            <label class="sr-onl">Acheteur</label>
+            {{ form_row(identification.acheteur,{'attr':{'class':'form-select form-control acheteur','placeholder':'Acheteur'}}) }}
+        </div>
+        <div class="col-md-6">
+            <label class="sr-onl">Vendeur</label>
+            {{ form_row(identification.vendeur,{'attr':{'class':'form-select form-control vendeur','placeholder':'Vendeur'}}) }}
+        </div>
+
+    </div>
+{% endmacro identification %}
+
+
+{% macro document_signe(document) %}
+    <div class="row row-container">
+        <div style="display:none">{{ form_row(document.document) }}</div>
+        <div class="col-md-3">{{ form_row(document.libDocument) }}</div>
+        <div class="col-md-3">{{ form_row(document.fichier) }}</div>
+        <div class="col-md-2">{{ form_row(document.dateAcheteur) }}</div>
+        <div class="col-md-2">{{ form_row(document.dateVendeur) }}</div>
+       
+        <div class="col-md-1 ">
+             {% if document.vars.value %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  document.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+                {% endif %}
+        </div>
+        
+        <div class="col-md-1 del-col">
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+
+{% macro enregistrement(enregistrement) %}
+    {% set value = enregistrement.vars.value %}
+    <div class="row row-container">
+        <div class="col-md-1">{% if value and value.sens %} {{ constant('App\\Entity\\Enregistrement::SENS')[value.sens] }} {% endif %}</div>
+        <div style="display:none">{{ form_row(enregistrement.sens) }}</div>
+        <div class="col-md-2">{{ form_row(enregistrement.numero) }}</div>
+        <div class="col-md-3">{{ form_row(enregistrement.date) }}</div>
+        <div class="col-md-4">{{ form_row(enregistrement.fichier) }}</div>
+        
+        <div class="col-md-1 ">
+            {% if value and  value.fichier %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  enregistrement.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+            {% endif %}
+        </div>
+        <div class="col-md-1 del-col d-none">
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+
+{% macro obtention(obtention) %}
+        {% set file_attrs = {} %}
+        {% set has_file  = obtention.vars.value and obtention.vars.value.fichier %}
+        {% if has_file %}
+            {% set file_attrs = file_attrs|merge({'data-file': obtention.vars.value.fichier.alt}) %}
+        {% endif %}
+    <div class="row row-line">
+        <div class="col-md-3">{{ form_row(obtention.libDocument) }}</div>
+        <div class="col-md-4">{{ form_row(obtention.fichier, file_attrs) }}</div>
+        <div class="col-md-3">{{ form_row(obtention.date) }}</div>
+        
+       
+        
+        <div class="col-md-1">
+            {% if has_file %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  obtention.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+                  {% endif %}
+        </div>
+          <div class="col-md-1 del-col">
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro remise(remise) %}
+    <div class="row">
+        <div class="col-md-3">{{ form_row(remise.date) }}</div>
+        {% set file_attrs = {} %}
+        {% set has_file  = remise.vars.value and remise.vars.value.fichier %}
+        {% if has_file %}
+            {% set file_attrs = file_attrs|merge({'data-file': remise.vars.value.fichier.alt}) %}
+        {% endif %}
+        <div class="col-md-7">{{ form_row(remise.fichier, file_attrs) }}</div>
+        {% if has_file %}
+        <div class="col-md-1">
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  remise.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+        </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{% macro remise_acte(remiseActe) %}
+    <div class="row">
+        <div class="col-md-3">{{ form_row(remiseActe.date) }}</div>
+        {% set file_attrs = {} %}
+        {% set has_file  = remiseActe.vars.value and remiseActe.vars.value.fichier %}
+        {% if has_file %}
+            {% set file_attrs = file_attrs|merge({'data-file': remiseActe.vars.value.fichier.alt}) %}
+        {% endif %}
+        <div class="col-md-7">{{ form_row(remiseActe.fichier, file_attrs) }}</div>
+        {% if has_file %}
+        <div class="col-md-1">
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  remiseActe.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+        </div>
+        {% endif %}
+    </div>
+{% endmacro %}

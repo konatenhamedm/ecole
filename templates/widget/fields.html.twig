@@ -1,0 +1,149 @@
+
+{% block form_widget_simple %}
+{% spaceless %}
+        {% set type = type|default('text') %}
+        <input class="{% if type != 'file' %}form-control{% endif %} {% if attr %}{% for attrname, attrvalue in attr %}{% if attrname == 'class' %}{{attrvalue}}{% endif %}{% endfor %}{% endif %}"
+               type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget %}
+    {% spaceless %}
+        <textarea class="form-control {% if attr %}{% for attrname, attrvalue in attr %}{% if attrname == 'class' %}{{attrvalue}}{% endif %}{% endfor %}{% endif %}" rows="3" {{ block('widget_attributes') }}>{{ value }}</textarea>
+    {% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <div class="mt-checkbox-list">
+        <label class="mt-checkbox">
+       	    <input type="checkbox" {{ block('widget_attributes') }} {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} >
+            
+            <span></span>
+        </label>
+    </div>
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+
+
+{% block radio_widget %}
+    {% spaceless %}
+        <div class="mt-radio-inline">
+            <label class="mt-checkbox">
+                <input type="radio" {{ block('widget_attributes') }} {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} >
+                
+                <span></span>
+            </label>
+        </div>
+    {% endspaceless %}
+{% endblock radio_widget %}
+
+{%- block choice_widget_collapsed -%}
+{#
+    {%- if required and empty_data is none and not empty_value_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+#}
+
+    <select class="form-control {% if multiple %} select2_multiple {% else %} select2_single {% endif %} {% if attr %}{% for attrname, attrvalue in attr %}{% if attrname == 'class' %}{{attrvalue}}{% endif %}{% endfor %}{% endif %}" {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif -%}
+        {#{%- if empty_data is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ empty_data != '' ? empty_data|trans({}, translation_domain) }}</option>
+        {%- endif -%}#}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {% set label = name|humanize %}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget -%}
+
+{%- block submit_widget -%}
+    {%- set type = type|default('submit') -%}
+    {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
+{%- block reset_widget -%}
+    {%- set type = type|default('reset') -%}
+    {{ block('button_widget', {'attr': {'class': 'btn btn-default'}}) }}
+{%- endblock reset_widget -%}
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {% set type = type|default('text') %}
+            <div class="input-group date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                <input class="form-control {% if attr %}{% for attrname, attrvalue in attr %}{% if attrname == 'class' %}{{attrvalue}}{% endif %}{% endfor %}{% endif %}"
+                       type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} {% if (attr.readonly is not defined or attr.readonly == true) %}readonly{% endif %}>
+                <span class="input-group-btn">
+                    <button class="btn default" type="button">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                </span>
+            </div>
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}
+
+
+{# Labels #}
+
+{%- block form_label -%}
+    {% if label is not same as(false) %}
+        {%- if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('control-label col-md-3 col-sm-3 col-xs-12'))|trim}) %}
+       {%- endif -%}
+        {%- if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('control-label col-md-3 col-sm-3 col-xs-12') ~ ' required')|trim}) %}
+        {%- endif -%}
+        {%- if label is empty -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}{% if required %}<span class="required">*</span>{% endif %}</label>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block button_label -%}
+
+{%- endblock -%}
+
+
+
+
+{# Rows #}
+
+{%- block form_row -%}
+
+    <div class="form-group">
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {% if form_label(form) %}
+        <div class="col-md-9">
+        	{{- form_widget(form) -}}
+        </div>
+        {% else %}
+            {{- form_widget(form) -}}
+        {% endif %}
+    </div>
+{%- endblock form_row -%}

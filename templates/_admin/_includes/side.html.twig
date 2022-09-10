@@ -1,0 +1,64 @@
+<!--APP-SIDEBAR-->
+<div class="sticky">
+    <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+    <div class="app-sidebar">
+        <div class="side-header">
+            <a class="header-brand1" href="{{ path('dashboard') }}">
+              {#  <h2>NOTARI</h2>#}
+                <img src="{{ asset('admin/assets/images/brand/Logo_Small1.png') }}" class="header-brand-img desktop-logo" alt="logo">
+                <img src="{{ asset('admin/assets/images/brand/Logo_Small1.png') }}" class="header-brand-img toggle-logo" alt="logo">
+                <img src="{{ asset('admin/assets/images/brand/Logo_Small1.png') }}" class="header-brand-img light-logo" alt="logo">
+                <img src="{{ asset('admin/assets/images/brand/Logo_Small1.png') }}" class="header-brand-img light-logo1" alt="logo">
+            </a>
+            <!-- LOGO -->
+        </div>
+        <div class="main-sidemenu">
+            <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"/></svg></div>
+            <ul class="side-menu">
+              {#  <li class="sub-category">
+                    <h3>Main</h3>
+                </li>#}
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="{{ path('dashboard') }}"><i class="side-menu__icon fe fe-home"></i><span class="side-menu__label">Tableau de bord</span></a>
+                </li>
+               {# <li class="sub-category">
+                    <h3>GESTION AGENDA</h3>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="{{ path('agenda') }}"><i class="side-menu__icon fe fe-book"></i><span class="side-menu__label">Agenda</span></a>
+                </li>#}
+                {% for parent in menu.listeParent %}
+               {# <li class="sub-category">
+                    <h3>{{ parent.parent }}</h3>
+                </li>#}
+                {#<span class="badge bg-pink side-badge">4</span><i class="angle fe fe-chevron-right hor-angle"></i><#}
+                        {% for module in menu.listeModule %}
+                            {% if parent.parent == module.parent %}
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                        <i class="side-menu__icon {% if module.icon %} fe {{ module.icon  }} {% else %}  fe-slack{% endif %}"></i>
+                                        <span class="side-menu__label">{{ module.module }}</span><i class="angle fe fe-chevron-right"></i>
+                                    </a>
+                                    <ul class="slide-menu" style="display:none">
+                                        <li class="side-menu-label1"><a href="javascript:void(0)">{{ module.module }} </a></li>
+                                        {% for groupe in menu.liste %}
+                                            {% if module.module == groupe.module %}
+                                                <li>
+                                                    <a  class="slide-item"  href="{{ path(groupe.lien) }}">
+                                                        {{ groupe.groupe |lower |capitalize }}</a>
+                                                    {#<a  class="slide-item" {% if groupe.lien=="documentTypeActe" %} data-bs-toggle="modal" data-bs-target="#extralargemodal" href="{{ path('documentTypeActe_new') }}" {% else %} href="{{ path(groupe.lien) }}" {% endif %}> {{ groupe.groupe |lower |capitalize }}</a>#}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                {% endfor %}
+
+            </ul>
+            <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"/></svg></div>
+        </div>
+    </div>
+    <!--/APP-SIDEBAR-->
+</div>

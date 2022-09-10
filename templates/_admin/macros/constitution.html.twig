@@ -1,0 +1,41 @@
+{% macro image(image) %}
+    <div class="table-responsive">
+        <table class="table border text-nowrap text-md-nowrap table-hover mb-0">
+            <tbody>
+            <tr>
+              <td>
+            {{ form_row(image.libelle,{'attr':{'class':'form-control','id':'userinput16','placeholder':'Nom du document'}}) }}
+              </td>
+            <td>
+            {{ form_row(image.dateObtention,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Date obtention'}}) }}
+
+           </td>
+           <td>
+{#{{ dump(image.children.path.vars.data) }}#}
+            {{ form_row(image.path,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Le fichier join'}}) }}
+             {# <input type="file" value="{{ image.children.path.vars.data }}" >#}
+           </td>
+            <td >
+                {% if image.children.path.vars.data !="" %}
+                <a class="btn btn-primary-gradient" target="_blank" href="{{ asset('uploads/images/' ~ image.children.path.vars.data) }}"
+                   download> <i class="fe fe-download"></i>
+                    <span style="font-weight: bolder;color: white">Télecharger</span></a>
+                {% else %}
+                    <a class="btn btn-secondary-gradient" data-bs-target="#no-data" data-bs-toggle="modal">
+                        <i class="fe fe-upload"></i><span > Aucun fichier</span>
+                    </a>
+                {% endif %}
+             </td>
+                <td width="50">
+                {{ form_row(image.etat,{'attr':{'class':'border-primary checkbox','type':'checkbox','id':'userinput1'}}) }}
+
+             </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+{% endmacro image %}

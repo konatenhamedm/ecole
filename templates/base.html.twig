@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Florrence hotel!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <link rel="icon" href="{{ asset('assetss/image/favicon.png') }}" type="image/png">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ asset('assetss/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/vendors/linericon/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/vendors/owl-carousel/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/vendors/nice-select/css/nice-select.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/vendors/owl-carousel/owl.carousel.min.css') }}">
+        <!-- main css -->
+        <link rel="stylesheet" href="{{ asset('assetss/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assetss/css/responsive.css') }}">
+       {# {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}#}
+    </head>
+    <body>
+        {% block body %}
+
+        {% endblock %}
+
+        <script src="{{ asset('assetss/js/jquery-3.2.1.min.js') }}"></script>
+
+        <script src="{{ asset('assetss/js/popper.js') }}"></script>
+        <script src="{{ asset('assetss/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assetss/vendors/owl-carousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('assetss/js/jquery.ajaxchimp.min.js') }}"></script>
+        <script src="{{ asset('assetss/js/mail-script.js') }}"></script>
+        <script src="{{ asset('assetss/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js') }}"></script>
+        <script src="{{ asset('assetss/vendors/nice-select/js/jquery.nice-select.js') }}"></script>
+        <script src="{{ asset('assetss/js/mail-script.js') }}"></script>
+        <script src="{{ asset('assetss/js/stellar.js') }}"></script>
+        <script src="{{ asset('assetss/vendors/lightbox/simpleLightbox.min.js') }}"></script>
+        <script src="{{ asset('assetss/js/custom.js') }}"></script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

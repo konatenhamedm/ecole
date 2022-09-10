@@ -1,0 +1,17 @@
+{% macro image(image) %}
+
+    <div class="row">
+        <div class="col-md-4 ">
+            {{ form_row(image.titre,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Titre'}}) }}
+        </div>
+        <div class="col-md-3 ">
+            {{ form_row(image.path,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Image'}}) }}
+        </div>
+
+        <div class="col-md-1  supprimer">
+
+        </div>
+
+    </div>
+
+{% endmacro image %}

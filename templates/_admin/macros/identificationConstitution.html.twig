@@ -1,0 +1,19 @@
+{% macro identifie(identifie) %}
+    {#{{ dump(identifie.acheteur.vars) }}#}
+    {#{%  if identifie.acheteur.vars.id == "dossier_identifications_0_acheteur" %}#}
+        <div class="row">
+            <div class="col-md-6 ">
+                <label class="sr-onl" for="userinput1">Client</label>
+                {{ form_row(identifie.acheteur,{'attr':{'class':'form-select form-control motif','id':'userinput16','placeholder':'Client'}}) }}
+            </div>
+           {# <div class="col-md-6 ">
+                {{ form_row(identifie.vendeur,{'attr':{'class':'form-select form-control motif','id':'userinput16','placeholder':'Vendeur'}}) }}
+            </div>
+#}
+            {#   <div class="col-md-1  supprimer">
+
+               </div>#}
+
+        </div>
+{#    {% endif %}#}
+{% endmacro identifie %}

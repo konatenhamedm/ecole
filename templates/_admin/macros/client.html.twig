@@ -1,0 +1,23 @@
+{% macro list_document(document) %}
+    <div class="row row-line">
+        {{ form_widget(document.docHash) }}
+        <div class="col-md-5">
+            <div style="display:none">
+            {{ form_row(document.document) }}
+            </div>
+            {{ form_row(document.libelle) }}
+        </div>
+        <div class="col-md-4">{{ form_row(document.fichier) }}</div>
+       
+        <div class="col-md-1 file-col">
+             {% if document.vars.value %}
+            <a class="btn btn-dark" target="_blank" href="{{ path('fichier_index', {id:  document.vars.value.fichier.id}) }}" download> <i class="fe fe-upload"></i>
+                <i class="fe fe-folder"></i></a>
+             {% endif %}
+        </div>
+       
+        <div class="col-md-1 del-col">
+
+        </div>
+    </div>
+{% endmacro %}

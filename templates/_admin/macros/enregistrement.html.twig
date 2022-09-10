@@ -1,0 +1,36 @@
+{% macro enregistrement(enregistrement) %}
+    {#{{ dump(enregistrement) }}#}
+    <div class="row ligne">
+        <div class="col-md-1">
+            {{ form_row(enregistrement.numero,{'attr':{'class':'form-control numero ','id':'userinput16','placeholder':'Numéro étape','readonly':'readonly'}}) }}
+        </div>
+        <div class="col-md-2 ">
+            {{ form_row(enregistrement.numeroEnregistrement,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Numero Enregistrement'}}) }}
+        </div>
+        <div class="col-md-2 ">
+            {{ form_row(enregistrement.dateEnvoi,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Date Envoi'}}) }}
+        </div>
+        <div class="col-md-2 ">
+            {{ form_row(enregistrement.dateRetour,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Date retour'}}) }}
+        </div>
+        <div class="col-md-3 ">
+            {{ form_row(enregistrement.path,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Document'}}) }}
+        </div>
+        {% if enregistrement.children.path.vars.data %}
+            <div class="col-md-1 ">
+                <a class="btn btn-dark" target="_blank" href="{{ asset('uploads/images/' ~ enregistrement.children.path.vars.data) }}" download> <i class="fe fe-upload"></i>
+                    <i class="fe fe-folder"></i></a>
+                {#<button type="button" class="btn btn-dark">Upload</button>#}
+            </div>
+        {% endif %}
+        {#  <div class="col-md-3 ">
+              {{ form_row(enregistrement.typeActe,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Type acte'}}) }}
+          </div>#}
+
+        <div class="col-md-1  supprimer">
+
+        </div>
+
+    </div>
+
+{% endmacro enregistrement %}

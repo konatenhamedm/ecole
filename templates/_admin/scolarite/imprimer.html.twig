@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no,
+                initial-scale=1.0,
+                maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Collège Gueye | Buval</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 10pt;
+            color: rgb(0, 25, 81);
+            font-weight: bold;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            color: whitesmoke;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .items th{
+            border: 1px solid #cccccc;
+            border-top: none;
+            text-align: left;
+            padding: 8px 3px;
+            font-size: 0.9em;
+        }
+        .info{
+            margin-left: 410px;
+            margin-top: -40px;
+        }
+        .info_dossier_facture{
+            margin-left: 380px;
+        }
+        p {	margin: 0pt; }
+        table.items {
+            border: 0.1mm solid #000000;
+        }
+        td { vertical-align: top; }
+        .items td {
+            border-left: 0.1mm solid #000000;
+            border-right: 0.1mm solid #000000;
+        }
+        table thead td { background-color: #EEEEEE;
+            text-align: center;
+            border: 0.1mm solid #000000;
+            font-variant: small-caps;
+        }
+
+        .items td.blanktotal {
+            background-color: #EEEEEE;
+            border: 0.1mm solid #002385;
+            background-color: #FFFFFF;
+            border: 0mm none #000000;
+            border-top: 0.1mm solid #000000;
+            border-right: 0.1mm solid #000000;
+        }
+        .items td.totals {
+            text-align: right;
+            border: 0.1mm solid #000000;
+        }
+        .items td.cost {
+            text-align:  right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="Titre" style="border: 1px solid #cccccc;
+              background-color: rgb(0, 25, 81);color: rgb(255, 197, 4);">
+            <p>
+            <h2 style="text-align: center">RELEVE DES VERSEMENTS | COLLEGE GUEYE DUVAL </h2>
+            </p>
+        </div>
+        <hr>
+        <div class="Info_client" style="border: 1px solid #cccccc;
+          padding: 10px; font-size: 15px;">
+            <table>
+                <tr>
+                    <td>MATRICULE</td>
+                    <td>{{ info.matricule }}</td>
+                </tr>
+                <tr>
+                    <td>NOM et PRENOMS</td>
+                    <td>{{ info.nom }} {{ info.prenoms }}</td>
+                </tr>
+                <tr>
+                    <td>PERIODE</td>
+                    <td>{{ info.libelle}}</td>
+                </tr>
+                <tr>
+                    <td>MONTANT TOTAL A PAYER</td>
+                    <td>{% if info.scolaritePersonne == 0 %}{{ info.scolarite | number_format(0, '.') }} {% else%} {{ info.scolaritePersonne | number_format(0, '.') }}{% endif %} Fcfa</td>
+                </tr>
+                <tr>
+                    <td>RESTE A PAYER.</td>
+                    <td>{% if info.scolaritePersonne == 0 %}{{ info.reste | number_format(0, '.') }} {% else%} {{ info.reste_non_affecte | number_format(0, '.') }}{% endif %} Fcfa</td>
+                </tr>
+            </table>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <table>
+                <tr style="background-color: rgb(0, 25, 81);
+                  color: rgb(255, 197, 4); font-size: 15px;">
+                    <th style="width:80px">N°VERS.</th>
+                    <th style="width:150px">LIBELLE</th>
+                    <th style="width:150px">DATE VERSEMENT</th>
+                    <th style="width:150px">MONTANT </th>
+                </tr>
+                {% for versement in versement %}
+                <tr>
+                    <td>{% if versement.numeroEtape == 0 %}  {% else %}{{ versement.numeroEtape }}{% endif %}</td>
+                    <td>{{ versement.libelle }}</td>
+                    <td>{{ versement.dateVersement | date("d/m/Y") }}</td>
+                    <td>{{ versement.montant | number_format(0, '.') }} Fcfa</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            <br>
+            <div style="text-align: justify;">
+                COLLEGE GUEYE DUVAL certifie que l'éleve {{ info.nom }} {{ info.prenoms }} à bien
+                effectué les versements ci-dessus mentionnées
+                dont le montant total est <span style="color: orange;size: 30px" > {{ info.paye | number_format(0, '.') }} </span> FCFA pour l'année scolaire
+                {{ info.libelle }}.
+                Ainsi l'éleve peut faire valoir ce que de droit.
+            </div>
+            <br><br>
+            <div style="text-align:right; padding-right: 20px;">
+                <p>COLLEGE GUEYE DUVAL</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

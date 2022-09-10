@@ -1,0 +1,28 @@
+{% extends '_admin/base.html.twig' %}
+
+{% block body %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+
+            <!-- container -->
+            <div class="main-container container-fluid">
+
+
+              {% block page_content %}
+                 {# {% for message in app.flashes('success') %}
+                      <div class="alert alert-success">
+                          {{ message }}
+                      </div>
+                  {% endfor %}#}
+                  <!-- End Row -->
+
+              {% endblock %}
+
+            </div>
+            <!-- container-closed -->
+        </div>
+    </div>
+
+{% endblock %}

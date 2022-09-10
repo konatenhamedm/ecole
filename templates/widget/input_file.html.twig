@@ -1,0 +1,11 @@
+{% use "bootstrap_3_layout.html.twig" %}
+
+{% block form_widget_simple %}
+   {# {{ dump(block('widget_attributes')) }}#}
+    {% set file_attr = 'file' in form.children|keys ? form.children.file.vars.attr : {} %}
+    {% set attr = attr|merge(file_attr) %}
+    {% apply  spaceless %}
+    <input class="{% if attr %}{% for attrname, attrvalue in attr %}{% if attrname == 'class' %}{{attrvalue}}{% endif %}{% endfor %}{% endif %}"
+               type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id|default(value) }}" {% endif %}/>
+    {% endapply  %}
+{% endblock form_widget_simple %}

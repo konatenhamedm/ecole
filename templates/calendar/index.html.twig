@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <!--Styles-->
+    <link href='https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.css' rel='stylesheet' />
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/
+bootstrap.min.css'>
+    <link href='https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <!--Scripts-->
+    <script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/moment.min.js'></script>
+    <script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/jquery.min.js'></script>
+    <script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min
+.js'></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                defaultDate: '2018-03-12',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                resourceColumns: [
+                    {
+                        labelText: 'Nom',
+                        field: 'Nom'
+                    },
+                    {
+                        labelText: 'Prenom',
+                        field: 'Prenom'
+                    }
+
+                ],
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2018-03-01',
+                        backgroundColor:'red'
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2018-03-07',
+                        end: '2018-03-10',
+                        backgroundColor:'green'
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2018-03-09T16:00:00'
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2018-03-16T16:00:00'
+                    },
+                    {
+                        title: 'Conference',
+                        start: '2018-03-11',
+                        end: '2018-03-13'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2018-03-12T10:30:00',
+                        end: '2018-03-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2018-03-12T12:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2018-03-12T14:30:00'
+                    },
+                    {
+                        title: 'Happy Hour',
+                        start: '2018-03-12T17:30:00'
+                    },
+                    {
+                        title: 'Dinner',
+                        start: '2018-03-12T20:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2018-03-13T07:00:00'
+                    },
+                    {
+                        title: 'Click for Google',
+                        url: 'http://google.com/',
+                        start: '2018-03-28'
+                    }
+                ],
+                eventClick: function(calEvent, jsEvent, view, resourceObj) {
+                    /*Open Sweet Alert*/
+                    swal({
+                        title: calEvent.title,//Event Title
+                        text: "Start From : "+moment(calEvent.start).format("MMMM Do YYYY, h:mm a"),//Event Start Date
+                        icon: "success",
+                    });
+                }
+            });
+        });
+    </script>
+    <style>
+        body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hoverEffect {
+            font-size: 29px;
+            position: absolute;
+            margin: 30px 55px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id='calendar'></div>
+</body>
+</html>

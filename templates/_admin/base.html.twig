@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<!-- Mirrored from laravel8.spruko.com/sash/datatable by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 02 Mar 2022 14:20:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+    <head>
+        <!-- META DATA -->
+        <meta charset="UTF-8">
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Sash –  Laravel Bootstrap 5 Admin & Dashboard Template">
+        <meta name="author" content="SPRUKO™">
+        <meta name="keywords" content="admin, admin dashboard, admin dashboard template, bootstrap admin, bootstrap dashboard, dashboard laravel, dashboard template, laravel admin, laravel admin dashboard, laravel admin dashboard template, laravel admin panel, laravel admin template, laravel dashboard template, laravel template, laravel ui template">
+
+        <!-- title -->
+        <title>Gueye | Duval</title>
+
+        <!-- FAVICON -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/assets/images/brand/favicon.ico') }}" />
+
+        <!-- BOOTSTRAP CSS -->
+        <link id="style" href="{{ asset('admin/assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+        
+        <!-- STYLE CSS -->
+        <link href="{{ asset('admin/assets/css/style.css') }}" rel="stylesheet" />
+        <link href="{{ asset('admin/assets/css/dark-style.css') }}" rel="stylesheet" />
+        <link href="{{ asset('admin/assets/css/transparent-style.css') }}" rel="stylesheet">
+        <link href="{{ asset('admin/assets/css/skin-modes.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/select2/select2.min.css') }}" rel="stylesheet" />
+      
+        <link href="{{ asset('assets/css/select2/select2-bs5.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/daterangepicker.css') }}" rel="stylesheet" />
+          <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet" />
+
+        <!--- FONT-ICONS CSS -->
+        <link href="{{ asset('admin/assets/plugins/icons/icons.css') }}" rel="stylesheet" />
+
+        <!-- COLOR SKIN CSS -->
+        <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('admin/assets/css/color1.css') }}" />
+
+        <!-- INTERNAL Switcher css -->
+        <link href="{{ asset('admin/assets/switcher/css/switcher.css') }}" rel="stylesheet" />
+        <link href="{{ asset('admin/assets/switcher/demo.css') }}" rel="stylesheet" />
+       {# <link href="{{ asset('assets/HoldOn.min.css') }}" rel="stylesheet">#}
+        {% block style %}
+          {#  {{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+       
+         <style>
+            /*.form-group select + .select2-container, .select2-container .select2-selection {
+                width: 100%!important;
+                height: calc(1.5em + 1.3rem + 2px);
+            }
+
+            .form-group select.form-control-sm + .select2-container, .select2-container .select2-selection {
+                width: 100%!important;
+                height: calc(1.5em + 1.1rem + 2px);
+            }
+
+
+            .form-group select.select2_multiple + .select2-container, .select2-container .select2-selection {
+                min-height: calc(1.5em + 1.3rem + 2px);
+                height: auto;
+            }
+
+            .input-group select + .select2-container {
+                position: relative;
+                -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+                width: 1%!important;
+                min-width: 0;
+                margin-bottom: 0;
+            }
+
+            .select2-container--default .select2-results__option {
+                word-break: break-all;
+            }
+
+            .disabled-select {
+                background-color: #d5d5d5;
+                opacity: 0.5;
+                border-radius: 3px;
+                cursor: not-allowed;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+
+            select[readonly].select2-hidden-accessible + .select2-container {
+                pointer-events: none;
+                touch-action: none;
+            }
+
+            select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+                background: #eee;
+                box-shadow: none;
+            }
+
+            select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow,
+            select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+                display: none;
+            }*/
+
+         </style>
+             <script>
+            var asset_base_path = "{{ asset('assets') }}";
+            
+            var current_user_id = "{{ app.user.id|default(0) }}";
+            
+        </script>
+    </head>
+    <body class="app ltr horizontal">
+    <div class="horizontalMenucontainer">
+
+
+   {% include '_admin/_includes/right.html.twig' %}
+    <!-- End Switcher -->
+
+    <!-- global-loader -->
+   {% include '_admin/_includes/loader.html.twig' %}
+    <!-- global-loader closed -->
+     <div class="page">
+
+               <div class="page-main">
+                   <!-- app-Header -->
+                   {% include '_admin/_includes/header.html.twig' %}
+                   <!-- /app-Header -->
+                   <!--APP-SIDEBAR-->
+                   {% include '_admin/_includes/side.html.twig' %}
+                   {% block body %}
+
+                   {% endblock %}
+               </div>
+
+   <!-- Sidebar-right -->
+   {% include '_admin/_includes/toast.html.twig' %}
+    <!-- modal -->
+    {% include '_admin/_includes/modals.html.twig' %}
+
+   <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+   </div>
+   <!-- FOOTER -->
+{#   {% include '_admin/_includes/footer.html.twig' %}#}
+   <!-- FOOTER CLOSED -->
+    </div>
+   
+
+    <script src="{{ asset('admin/admin/js/jquery3.1.js') }}"></script>
+   <!-- JQUERY JS -->
+  
+   <script src="{{ asset('admin/admin/js/active.js') }}"></script>
+   <!-- BOOTSTRAP JS -->
+   <script src="{{ asset('admin/assets/plugins/bootstrap/js/popper.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+
+   <!-- INPUT MASK JS-->
+   <script src="{{ asset('admin/assets/plugins/input-mask/jquery.mask.min.js') }}"></script>
+
+   <!-- SIDE-MENU JS -->
+   <script src="{{ asset('admin/assets/plugins/sidemenu/sidemenu.js') }}"></script>
+
+   <!-- SIDEBAR JS -->
+   <script src="{{ asset('admin/assets/plugins/sidebar/sidebar.js') }}"></script>
+
+   <!-- Perfect SCROLLBAR JS-->
+   <script src="{{ asset('admin/assets/plugins/p-scroll/perfect-scrollbar.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/p-scroll/pscroll.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/p-scroll/pscroll-1.js') }}"></script>
+
+
+   <!-- INTERNAL SELECT2 JS -->
+   <script src="{{ asset('admin/assets/plugins/select2/select2.full.min.js') }}"></script>
+   
+
+   <!-- DATA TABLE JS-->
+   <script src="{{ asset('admin/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/dataTables.bootstrap5.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/buttons.bootstrap5.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/jszip.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/pdfmake/pdfmake.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/pdfmake/vfs_fonts.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/dataTables.responsive.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/plugins/datatable/responsive.bootstrap5.min.js') }}"></script>
+   <script src="{{ asset('admin/assets/js/table-data.js') }}"></script>
+   <script src="{{ asset('assets/moment.min.js') }}"></script>
+   <script src="{{ asset('assets/daterangepicker.js') }}"></script>
+
+   <script src='{{ asset('admin/assets/plugins/fullcalendar/moment.min.js') }}'></script>
+      <script src='{{ asset('admin/assets/plugins/fullcalendar/fullcalendar.min.js') }}'></script>
+      <script src="{{ asset('admin/assets/js/fullcalendar.js') }}"></script>
+
+   
+
+   <!-- Color Theme js -->
+   <script src="{{ asset('admin/assets/js/themeColors.js') }}"></script>
+    {#<script src="{{ asset('admin/assets/js/tooltip%26popover.js') }}"></script>#}
+
+   <!-- Sticky js -->
+   <script src="{{ asset('admin/assets/js/sticky.js') }}"></script>
+
+   <!-- CUSTOM JS -->
+    <script src="{{ asset('admin/assets/plugins/fancyuploder/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/fancyuploder/jquery.fileupload.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/fancyuploder/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/fancyuploder/jquery.fancy-fileupload.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/fancyuploder/fancy-uploader.js') }}"></script>
+    <!-- FILE UPLOADES JS -->
+    <script src="{{ asset('admin/assets/plugins/fileuploads/js/fileupload.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/fileuploads/js/file-upload.js') }}"></script>
+
+    <!-- FORM WIZARD JS-->
+    <script src="{{ asset('admin/assets/plugins/formwizard/jquery.smartWizard.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/formwizard/fromwizard.js') }}"></script>
+    <{#script src="{{ asset('admin/assets/plugins/formwizard/jquery.smartWizard.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/formwizard/fromwizard.js') }}"></script>#}
+
+    <!-- INTERNAl Jquery.steps js -->
+    <script src="{{ asset('admin/assets/plugins/jquery-steps/jquery.steps.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/plugins/parsleyjs/parsley.min.js') }}"></script>
+
+    <script src="{{ asset('admin/assets/plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/form-wizard.js') }}"></script>
+    <script src="{{ asset('admin/admin/js/validation.js') }}"></script>
+
+   <!-- Switcher js -->
+    <script src="{{ asset('admin/assets/switcher/js/switcher.js') }}"></script>
+  
+    <script src="{{ asset('assets/js/jquery.form.js') }}"></script>
+    <script src="{{ asset('assets/js/init.js') }}"></script>
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        
+
+   </script>
+
+   <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalTitle"
+        aria-hidden="true" data-backdrop="static"
+        aria-hidden="true"
+   >
+       <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+           <div class="modal-content">
+               <!-- Header -->
+               <div class="modal-header">
+                   <h4 id="editUserModalTitle" class="modal-title"><span> &nbsp;&nbsp;Veillez patienter svp... </span></h4>
+
+                   <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary" data-dismiss="modal"
+                           aria-label="Close">
+                       <i class="tio-clear tio-lg"></i>
+                   </button>
+               </div>
+               <!-- End Header -->
+
+               <!-- Body -->
+               <div class="modal-body text-center">
+                   {# <img src="{{ asset('admin/assets/global/img/loading-spinner-grey.gif') }}" alt="" class="loading">#}
+                   <span> &nbsp;&nbsp;Chargement des données... </span>
+               </div>
+               <!-- End Body -->
+           </div>
+       </div>
+   </div>
+   {% block javascripts %}
+       {#   {{ encore_entry_script_tags('app') }}#}
+   {% endblock %}
+    </body>
+</html>

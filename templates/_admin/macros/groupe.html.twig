@@ -1,0 +1,24 @@
+{% macro groupe(groupe) %}
+
+    <div class="row">
+        <div class="form-group col-md-3 ">
+
+            {{ form_row(groupe.titre,{'attr':{'class':'form-control ','id':'userinput15','placeholder':'Titre','require':'require'}}) }}
+        </div>
+        <div class="form-group col-md-3 ">
+
+            {{ form_row(groupe.lien,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Lien','required':'required'}}) }}
+        </div>
+        <div class="form-group col-md-3 ">
+            {{ form_row(groupe.icon,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Icon'}}) }}
+        </div>
+        <div class="form-group col-md-2 ">
+            {{ form_row(groupe.ordre,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Ordre','required':'required'}}) }}
+        </div>
+        <div class="form-group col-md-1  supprimer">
+
+        </div>
+
+    </div>
+
+{% endmacro groupe %}

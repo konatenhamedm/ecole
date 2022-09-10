@@ -1,0 +1,35 @@
+{% block page_content %}
+    <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">Détails UserGroupe</h4>
+    </div>
+   
+    <div class="modal-body">
+        <table class="table table-bordered">
+        <tbody>
+                            <tr>
+                    <th>Id</th>
+                    <td>{{ user_groupe.id }}</td>
+                </tr>
+                            <tr>
+                    <th>Name</th>
+                    <td>{{ user_groupe.name }}</td>
+                </tr>
+                            <tr>
+                    <th>Roles</th>
+                    <td>{{ user_groupe.roles ? user_groupe.roles|json_encode : '' }}</td>
+                </tr>
+                    </tbody>
+    </table>
+    </div>
+    <div class="modal-footer">
+        
+        <button type="button" class="btn dark btn-outline" data-bs-dismiss="modal">Fermer</button>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        
+    </script>
+{% endblock %}

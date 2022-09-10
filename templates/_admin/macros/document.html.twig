@@ -1,0 +1,67 @@
+{% macro versement(versement) %}
+
+    <div class="row row-line">
+        <div class="col-1">
+            {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_widget(versement.numeroEtape) }}
+        </div>
+        <div class="col-3 ">
+            {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_row(versement.dateVersement) }}
+        </div>
+        <div class="col-3 ">
+            {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_row(versement.libelle) }}
+        </div>
+        <div class="col-4 montant">
+            {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_row(versement.montant) }}
+        </div>
+        <div class="col-1  del-col">
+        </div>
+    </div>
+
+{% endmacro %}
+
+
+{% macro image(image) %}
+
+    <div class="row row-line">
+        <div class="col-11 ">
+           {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_row(image.libelle,{'attr':{'class':'form-control','placeholder':'Nom du document'}}) }}
+        </div>
+       <div class="col-1  del-col">
+        </div>
+    </div>
+
+{% endmacro %}
+
+
+{% macro workflow(workflow) %}
+
+    <div class="row row-line mb-4">
+        <div class="col-1 ">
+           {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_widget(workflow.numeroEtape) }}
+        </div>
+        <div class="col-5">
+           {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_widget(workflow.libelleEtape) }}
+        </div>
+         <div class="col-1">
+           {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_widget(workflow.nombreJours) }}
+        </div>
+         <div class="col-2">
+           {# <label class="sr-onl" for="userinput1"> <h3>Nom du document</h3></label>#}
+            {{ form_widget(workflow.propriete) }}
+        </div>
+         <div class="col-2">
+            {{ form_widget(workflow.route) }}
+        </div>
+       <div class="col-1  del-col">
+        </div>
+    </div>
+
+{% endmacro %}

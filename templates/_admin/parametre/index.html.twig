@@ -1,0 +1,80 @@
+{% extends '_admin/_includes/index.html.twig.twig' %}
+
+{% block titre %}{{ menu.getRoute }}{% endblock %}
+
+{% block page_content %}
+
+    {% set new = menu.getRoute %}
+    <!-- PAGE-HEADER -->
+    <div class="page-header">
+        <h1 class="page-title">{{ new |capitalize }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Gestion des actes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ new | capitalize }}</li>
+            </ol>
+        </div>
+
+    </div>
+    <!-- PAGE-HEADER END -->
+    <!-- Row -->
+    <div class="row row-sm">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-md-10">
+                        <h3 class="card-title">{{ titre | capitalize }}</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-secondary bg-secondary-gradient offset-7" {% if new !="admin" %} href="{{ path(new ~ '_new') }}" {% endif%} {% if modal=="modal" %} data-bs-toggle="modal" data-bs-target="#extralargemodal" {% endif %}>
+                            <i class="fe fe-plus"></i>Nouveau
+                        </a>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-bordered text-nowrap border-bottom">
+                            <thead>
+
+                            {% include '_admin/_tableau/header.html.twig' with {'tableau':tableau  }%}
+
+                            </thead>
+                            <tbody>
+                            {% for data in pagination %}
+                                <tr>
+
+                                    <td >
+                                        <a class="d-flex align-items-center" href="user-profile.html">
+                                            <div class="avatar avatar-circle">
+                                                <img class="avatar-img" src="{{ asset('uploads/images/' ~ data.logo) }}" alt="Image Description">
+                                            </div>
+                                        </a>
+                                    </td>
+
+                                    <td >
+                                        {{ data.titre }}
+                                    </td>
+                                    <td >
+                                        {{ data.couleurHeader }}
+                                    </td>
+                                    {% include '_admin/_tableau/action.html.twig' with {'module':new ,'data':data }%}
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}

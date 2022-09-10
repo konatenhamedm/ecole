@@ -1,0 +1,45 @@
+{% macro icon(icon) %}
+
+
+ <div class="card card-custom" data-card="true" data-card-tooltips="false" id="kt_card_2">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">Icon</h3>
+            </div>
+            <div class="card-toolbar supprimer">
+                {#<a href="tools.html#" class="btn btn-icon btn-sm btn-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                    <i class="ki ki-arrow-down icon-nm"></i>
+                </a>
+                <a href="tools.html#" class="btn btn-icon btn-sm btn-success mr-1" data-card-tool="reload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reload Card">
+                    <i class="ki ki-reload icon-nm"></i>
+                </a>#}
+
+               {# <a href="tools.html#" class="btn btn-icon btn-sm btn-warning supprimer" data-card-tool="remove" data-toggle="tooltip" data-placement="top" title="" data-original-title="Remove Card">
+                    <i class="ki ki-close icon-nm"></i>
+                </a>#}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-md-3 ">
+
+                    {{ form_row(icon.x,{'attr':{'class':'form-control ','id':'userinput15','placeholder':'Titre','require':'require'}}) }}
+                </div>
+                <div class="form-group col-md-3 ">
+
+                    {{ form_row(icon.y,{'attr':{'class':'form-control ','id':'userinput16','placeholder':'Lien','required':'required'}}) }}
+                </div>
+                <div class="form-group col-md-3 ">
+                    {{ form_row(icon.width,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Icon','required':'required'}}) }}
+                </div>
+                <div class="form-group col-md-3 ">
+                    {{ form_row(icon.exist,{'attr':{'class':'form-control motif','id':'userinput16','placeholder':'Ordre','required':'required'}}) }}
+                </div>
+
+
+            </div>
+     </div>
+    </div><br>
+{% endmacro icon %}
+
+

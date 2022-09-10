@@ -1,0 +1,43 @@
+{% block page_content %}
+
+    {% form_theme form 'widget/fields-block.html.twig' %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {{ form_start(form, {'attr': {'class':'form-horizontal', 'role':'form'}}) }}
+        <div class="modal-body">
+             {{ include('_includes/ajax/response.html.twig') }}
+             <div class="alert alert-danger  fade show" role="alert">
+                <div class="alert-text">Voulez-vous vraiment supprimer ce évènement <b>"{{calendar.title }}"</b> ?</div>
+            </div>
+            {{ form_widget(form) }}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn dark btn-outline btn-default" data-bs-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-danger btn-ajax">Supprimer</button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(function () {
+            $('.no-auto').each(function () {
+                const $this = $(this);
+                const $id = $('#' + $this.attr('id'));
+                init_date_picker($id,  'down', (start, e) => {
+                    //$this.val(start.format('DD/MM/YYYY'));
+                }, null, null, false);
+
+                $id.on('apply.daterangepicker', function (ev, picker) {
+                    $(this).val(picker.startDate.format('DD/MM/YYYY'));
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

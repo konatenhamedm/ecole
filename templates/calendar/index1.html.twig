@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="//rawgit.com/seankenny/fullcalendar/v2/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="../CSS/form.css"/>
+    <link rel="stylesheet" href="../CSS/fullcalendar.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.1/moment.min.js"></script>
+    <script src="../js/fullcalendar.js"></script>
+</head>
+<?php
+include_once('navbar.php');
+?>
+<body id="bodyAgenda">
+<form id="buttonAddEvent" action="addEvent.php" method="get">
+    <input type="submit" value="Ajouter un évènement" />
+</form>
+<div id='calendar'></div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var date = new Date();
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,resourceDay'
+            },
+            defaultView: 'resourceDay',
+            editable: true,
+            droppable: true,
+
+            //affichage des ressources
+            resources:[
+            <?php
+                foreach($tab as $key => $value)
+        echo "{'id' : '$key' , 'name' : '$value'},"
+            ?>
+    ],
+
+        //affichage des events
+        events: [
+        <?php
+            foreach($tab2 as $value2)
+        echo "{
+        id : $value2[0],
+            title : '$value2[1]',
+            start : new Date('$value2[2]'),
+            end : new Date('$value2[3]'),
+            resources : $value2[4]
+    },
+        "
+            ?>],
+
+        // the 'ev' parameter is the mouse event rather than the resource 'event'
+        // the ev.data is the resource column clicked upon
+        selectable: true,
+            selectHelper: true,
+
+            select: function(start, end, ev) {
+            console.log(start);
+            console.log(end);
+            console.log(ev.data); // resources
+        },
+
+        dayClick: function(date, jsEvent, view) {
+            alert('Clicked on: ' + date.format());
+            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+            alert('Current view: ' + view.name);
+        },
+
+        eventClick: function(event) {
+            console.log(event);
+        },
+
+        eventDrop: function (event, delta, revertFunc) {
+            console.log(event);
+        }
+    });
+    });
+</script>
+</html>

@@ -1,0 +1,19 @@
+{% block page_content %}
+    {% set action=action %}
+    <div class="modal-header bg-secondary-gradient">
+        <h6 class="modal-title">Message de confirmation</h6><button aria-label="Close" class="btn-close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <hr>
+    <div class="modal-body text-center">
+        <i class="icon icon-check fs-70 text-success "></i>
+        <h4 class="text-success text-center">Confirmation!</h4>
+        <p class="">Voulez vous reéllement supprimer cet enregistrement?</p>
+
+
+    </div>
+    <div class="modal-footer">
+        <a  class="btn btn-success activer" href="{{ path( action ~ '_active',{'id':id}) }}" >Confirmer</a><button class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+    </div>
+
+{% endblock %}
+

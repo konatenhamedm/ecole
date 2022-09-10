@@ -1,0 +1,111 @@
+{% form_theme form _self %}
+{% block page_content %}
+    {% form_theme form 'widget/fields-block.html.twig' %}
+    <div class="modal-header bg-secondary-gradient">
+        <h2 class="modal-title" style="margin-top: -15px;color: white">EDITION-{{ titre | upper  }}
+        </h2>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+    <div class="modal-body ">
+        {# {{ include('includes/ajax/response.html.twig') }} #}
+       {# {{ include('admin/_includes/entete_modal.html.twig') }}#}
+        <div class="row">
+            <div class="form-group col-md-12 mb-2">
+                <label class="sr-onl" for="userinput1">Titre</label>
+                {{ form_widget(form.titre,{'attr':{'class':'form-control border-primary','id':'userinput1','placeholder':'Titre','required':'required'}}) }}
+                {# <input type="text" id="userinput1" class="form-control border-primary" placeholder="Compte contribuable" name="name">#}
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-2 mb-2">
+
+
+                <div class="profile-cover">
+                    <div class="profile-cover-img-wrapper">
+                        <img id="editProfileCoverImgModal" class="profile-cover-img" src="{{ asset('assets/img/1920x400/img1.jpg') }}" alt="Image Description">
+
+                        <!-- Custom File Cover -->
+                        <div class="profile-cover-content profile-cover-btn p-3">
+                            <div class="custom-file-btn">
+                                {#<input type="file" class="js-file-attach custom-file-btn-input" id="editAvatarUploaderModal"
+                                       data-hs-file-attach-options='{
+                                      "textTarget": "#editAvatarUploaderModal",
+                                      "mode": "image",
+                                      "targetAttr": "src",
+                                      "allowTypes": [".png", ".jpeg", ".jpg"]
+                                   }'>#}
+                              {#  {{ form_widget(form.logo,{'attr':{'type':'file','class':'js-file-attach custom-file-btn-input','id':'editAvatarUploaderModal','accept':'.png, .jpg, .jpeg','placeholder':'Image'
+
+                                },'data-hs-file-attach-options':{
+                                    "textTarget": "#editAvatarUploaderModal",
+                                    "mode": "image",
+                                    "targetAttr": "src",
+                                    "allowTypes": [".png", ".jpeg", ".jpg"]
+                                }
+                                }) }}#}
+
+                            </div>
+                        </div>
+                        <!-- End Custom File Cover -->
+                    </div>
+                </div>
+                <!-- End Profile Cover -->
+
+                <!-- Avatar -->
+                <label class="avatar avatar-xxl avatar-circle avatar-border-lg avatar-uploader profile-cover-avatar mb-5" for="parametre_logo">
+                    <img id="editAvatarImgModal" class="avatar-img" src="{{ asset('assets/img/160x160/img9.jpg') }}" alt="Image Description">
+
+                      <input type="file" class="js-file-attach avatar-uploader-input" id="parametre_logo"
+                             data-hs-file-attach-options='{
+                                  "textTarget": "#editAvatarImgModal",
+                                  "mode": "image",
+                                  "targetAttr": "src",
+                                  "allowTypes": [".png", ".jpeg", ".jpg"]
+                               }'>
+                   {# {{ form_widget(form.logo,{'attr':{'type':'file','class':'js-file-attach custom-file-btn-input','accept':'.png, .jpg, .jpeg','placeholder':'Image'
+                        'data-hs-file-attach-options':{
+                            'textTarget': '#editAvatarImgModal',
+                            'mode': 'image',
+                            'targetAttr': 'src',
+                            'allowTypes': ['.png', '.jpeg', '.jpg']
+                        }
+                    }
+                    }) }}#}
+                    {#<span class="avatar-uploader-trigger">
+                      <i class="tio-edit avatar-uploader-icon shadow-soft"></i>
+                    </span>#}
+                </label>
+
+            </div>
+        </div><!-- row -->
+        <div class="row">
+            <div class="form-group col-md-6 mb-2">
+                <label class="sr-onl" for="userinput1">Couleur header</label>
+                {{ form_widget(form.couleurHeader,{'attr':{'class':'form-control border-primary','id':'userinput1','placeholder':'Couleur header'}}) }}
+                {# <input type="text" id="userinput1" class="form-control border-primary" placeholder="Compte contribuable" name="name">#}
+            </div>
+            <div class="form-group col-md-6 mb-2">
+                <label class="sr-onl" for="userinput2">Couleur side</label>
+                {{ form_widget(form.couleurSide,{'attr':{'class':'form-control border-primary','id':'userinput2','placeholder':'Couleur side'}}) }}
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <a href="{{ path('parametre') }}" class="btn btn-secondary">Fermer</a>
+        <button type="submit" class="btn btn-primary">Valider</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}{#
+    <script src="{{ asset('admin/assets/js/image.js') }}"></script>#}
+    <script src="{{ asset('admin/assets/js/upload.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/pages/crud/file-upload/image-input-v=7.1.2.js') }}"></script>
+{% endblock %}
