@@ -52,6 +52,9 @@ class Eleve
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $updatedUsername = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $statut = null;
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -151,7 +154,7 @@ class Eleve
         return $this->naissance;
     }
 
-    public function setNaissance(\DateTimeInterface $naissance): self
+    public function setNaissance($naissance): self
     {
         $this->naissance = $naissance;
 
@@ -220,6 +223,18 @@ class Eleve
                 $scolarite->setEleve(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

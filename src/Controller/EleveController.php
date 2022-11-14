@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Service\GenerateCode;
+use App\Classe\UploadFile;
 use App\Service\Services;
 use App\Entity\Eleve;
 use App\Service\FormError;
 use App\Form\EleveType;
+use App\Form\UploadFileType;
 use App\Service\ActionRender;
 use App\Service\PaginationService;
 use App\Repository\EleveRepository;
@@ -14,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Omines\Adapter\ArrayAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\DataTableFactory;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Omines\DataTablesBundle\Column\TextColumn;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
  * @Route("/admin")
@@ -44,7 +48,6 @@ class EleveController extends AbstractController
 
     /**
      * @Route("/eleve", name="eleve")
-     * @param TypeRepository $repository
      * @return Response
      */
     public function index(Request $request,
@@ -176,6 +179,16 @@ class EleveController extends AbstractController
         $this->security = $security->getUser()->getUserIdentifier();
 
     }
+
+/*SELECT e.`matricule`,e.`nom`,s.scolarite_personne -SUM(v.montant)+ 5000 AS reste_non_affecte,a.scolarite - SUM(v.montant) + 5000  AS reste,a.scolarite,s.scolarite_personne,
+SUM(v.montant) - 5000 AS paye,c.libelle
+FROM `eleve` AS e
+INNER JOIN scolarite AS s ON s.`eleve_id` = e.`id`
+INNER JOIN versement AS v ON v.scolarite_id=s.id
+INNER JOIN annee_has_classe AS a ON  s.ahc_id =a.id
+INNER JOIN classe AS c ON a.classe_id = c.id AND c.libelle = "2"
+
+GROUP BY e.`matricule`*/
 
     /**
      * @Route("/eleve/new", name="eleve_new", methods={"GET","POST"})
@@ -413,6 +426,129 @@ class EleveController extends AbstractController
         return $this->render('_admin/eleve/delete.html.twig', [
             'eleve' => $eleve,
             'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/article/addFile", name="article_addFile_new", methods={"GET","POST"})
+     * @param Request $request
+     * @param EleveRepository $eleveRepository
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \Exception
+     */
+    public function addFile(
+        Request $request, 
+        EleveRepository $eleveRepository,
+        EntityManagerInterface $em)
+    {
+        $dossier = new UploadFile();
+        $form = $this->createForm(UploadFileType::class,$dossier, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('article_addFile_new')
+        ]);
+        $form->handleRequest($request);
+
+        $data = null;
+        $statutCode = Response::HTTP_OK;
+
+        $isAjax = $request->isXmlHttpRequest();
+
+        if ($form->isSubmitted()) {
+
+            $response = [];
+            $redirect = $this->generateUrl('eleve');
+
+            //
+
+            if ($form->isValid()) {
+
+                $file = $form->get("upload_file")->getData(); // get the file from the sent request
+
+
+                $fileFolder = $this->getParameter('kernel.project_dir') . '/public/uploads/';  //choose the folder in which the uploaded file will be stored
+
+                $filePathName = md5(uniqid()) . $file->getClientOriginalName();
+
+                try {
+                    $file->move($fileFolder, $filePathName);
+                } catch (FileException $e) {
+                  dd($e)  ;
+                }
+
+                $spreadsheet = IOFactory::load($fileFolder . $filePathName); // Here we are able to read from the excel file
+
+                $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
+                $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
+
+
+                    foreach ($sheetData as $Row)
+                    {
+
+                        $ref = $Row['A'];     // store the first_name on each iteration
+                        $nom = $Row['B'];   // store the last_name on each iteration
+                        $prenoms= $Row['C'];  // store the email on each iteration
+                        $date = $Row['D'];
+                        $statut = $Row['E'];
+                        $sexe = $Row['F'];  // store the phone on each iteration
+
+                        $eleve_existe = $eleveRepository->findOneBy(array('matricule' => $ref));
+
+
+                        if (!$eleve_existe) {
+                            $eleve = new Eleve();
+                            $date1 = new \DateTime($date);
+                            //echo $date->format('Y-m-d H:i:s');
+                            $eleve->setCreatedAt(new \DateTime());
+                            $eleve->setCreatedUsername($this->security);
+                            $eleve->setUpdatedAt(new \DateTime());
+                            $eleve->setUpdatedUsername($this->security);
+                            $eleve->setNom($nom);
+                            $eleve->setMatricule($ref);
+                            $eleve->setPrenoms($prenoms);
+                            $eleve->setNaissance($date1);
+                            $eleve->setStatut($statut);
+                            $eleve->setGenre($sexe);
+                            $em->persist($eleve);
+                            $em->flush();
+                        }else{
+                            $date2 = new \DateTime($date);
+                            $eleve_existe->setNom($nom);
+                            $eleve_existe->setMatricule($ref);
+                            $eleve_existe->setPrenoms($prenoms);
+                            $eleve_existe->setNaissance($date2);
+                            $eleve_existe->setGenre($sexe);
+                            $eleve_existe->setStatut($statut);
+                            $em->persist($eleve_existe);
+                               $em->flush();
+                        }
+
+                     
+                    }
+
+                $data = true;
+                $message       = 'Opération effectuée avec succès';
+                $statut = 1;
+                $this->addFlash('success', $message);
+
+
+            }
+
+
+            if ($isAjax) {
+                return $this->json( compact('statut', 'message', 'redirect', 'data'), $statutCode);
+            } else {
+                if ($statut == 1) {
+                    return $this->redirect($redirect, Response::HTTP_OK);
+                }
+            }
+
+        }
+        return $this->renderForm('_admin/eleve/upload_file_new.html.twig', [
+            'form' => $form,
+            'titre'=>'Upload'
         ]);
     }
 

@@ -16,6 +16,20 @@ class EleveType extends AbstractType
         $builder
             ->add('matricule')
             ->add('nom')
+            ->add('statut',ChoiceType::class,
+                [
+                    'expanded'     => false,
+                    'placeholder' => 'Choisir un status',
+                    'required'     => true,
+                    // 'attr' => ['class' => '],
+                    'multiple' => false,
+                    //'choices_as_values' => true,
+
+                    'choices'  => array_flip([
+                        'ELEVE_AFFECTE'        => 'Affecté',
+                        'ELEVE_NON_AFFECTE'       => 'Non affecté',
+                    ]),
+                ])
             ->add('prenoms')
             ->add('naissance', DateType::class, [
                 'label' => "Date de naissance"

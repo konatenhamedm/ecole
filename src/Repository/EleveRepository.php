@@ -2,7 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Annee;
+use App\Entity\AnneeHasClasse;
+use App\Entity\Classe;
 use App\Entity\Eleve;
+use App\Entity\Parcours;
+use App\Entity\Scolarite;
+use App\Entity\Versement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -89,6 +95,45 @@ SQL;
 
         $stmt = $connection->executeQuery($sql, $params);
         return $stmt->fetchAllAssociative();
+    }
+    /*SELECT e.`matricule`,e.`nom`,s.scolarite_personne -SUM(v.montant)  AS reste_non_affecte,a.scolarite - SUM(v.montant)  AS reste,a.scolarite,s.scolarite_personne,
+    SUM(v.montant) - 5000 AS paye,c.libelle
+    FROM `eleve` AS e
+    INNER JOIN scolarite AS s ON s.`eleve_id` = e.`id`
+    INNER JOIN versement AS v ON v.scolarite_id=s.id
+    INNER JOIN annee_has_classe AS a ON  s.ahc_id =a.id
+    INNER JOIN classe AS c ON a.classe_id = c.id AND c.libelle = "2"
+
+    GROUP BY e.`matricule`*/
+
+    public function getListe($id)
+    {
+        return $this->createQueryBuilder('e')
+            ->select(
+                's.scolaritePersonne',
+                's.scolaritePersonne-SUM(v.montant) as reste_non_affecte',
+                'a.scolarite',
+                'a.scolarite - SUM(v.montant)   AS reste_affecte',
+                'SUM(v.montant) AS paye',
+                'e.nom',
+                'e.prenoms',
+                'e.statut',
+                'e.naissance',
+                'e.matricule',
+                'p.libelle'
+
+            )
+            ->innerJoin(Scolarite::class,'s','WITH','s.eleve=e.id')
+            ->innerJoin(AnneeHasClasse::class,'a','WITH','s.ahc=a.id')
+            ->innerJoin(Versement::class,'v','WITH','v.scolarite=s.id')
+            ->innerJoin(Classe::class,'c','WITH','a.classe=c.id')
+            ->innerJoin(Parcours::class,'p','WITH','c.parcours=p.id')
+            ->andWhere('c.id = :val')
+            ->addGroupBy('e.matricule')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 //    /**

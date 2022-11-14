@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="#" data-container=".versement-list" data-prototype=".versement" data-protoname="__workflow__" class="btn btn-sm btn-info add_line">
+                        <a href="#"  class="btn btn-sm btn-info add_line">
                             AJOUTER UN VERSEMENT
                         </a>
                     </div>
@@ -81,16 +81,39 @@
     </div>
     {{ form_end(form) }}
 {% endblock %}
+        {% block javascripts %}
+            {#  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>#}
+            <script src="{{ asset('admin/admin/js/workflow.js') }}"></script>
+            <!-- MULTI SELECT JS-->
+            <script src="{{ asset('admin/assets/plugins/multipleselect/multiple-select.js') }}"></script>
+            <script src="{{ asset('admin/assets/plugins/multipleselect/multi-select.js') }}"></script>
+
+            <!-- FORMELEMENTS JS -->
+            <script src="{{ asset('admin/assets/js/formelementadvnced.js') }}"></script>
+            <script src="{{ asset('admin/assets/js/form-elements.js') }}"></script>
+            <script >
+                $(function () {
+                    $('.no-auto').each(function () {
+                        const $this = $(this);
+                        const $id = $('#' + $this.attr('id'));
+                        init_date_picker($id,  'down', (start, e) => {
+                            //$this.val(start.format('DD/MM/YYYY'));
+                        }, null, null, false);
+
+                        $id.on('apply.daterangepicker', function (ev, picker) {
+                            $(this).val(picker.startDate.format('DD/MM/YYYY'));
+                        });
+                    });
+                });
+            </script>
+        {% endblock %}
+{#
 
 {% block javascripts %}
   <script src="{{ asset('admin/assets/plugins/multipleselect/multiple-select.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/multipleselect/multi-select.js') }}"></script>
     <script>
-               $('.libelle').attr('readonly', true)
-               $('.numero-etape').attr('readonly', true)
-              $(".versement-list .row-line").first().find('.montant').attr('readonly', true);
-              $(".versement-list .row-line").first().find('.date').attr('readonly', true);
-              $(".versement-list .row-line").first().find('.del-col').remove();
+              
 
         $(function () {
             init_select2(null, null, '.form-body');
@@ -151,12 +174,6 @@
 
             }
 
-            if (index_wk > 0) {
-                $container_wk.children('.row-line').each(function() {
-                    const $this = $(this);
-                    addDeleteLink($this);
-                });
-            }
 
 
             // La fonction qui ajoute un formulaire Categorie
@@ -223,4 +240,4 @@
         });
         
     </script>
-{% endblock %}
+{% endblock %}#}

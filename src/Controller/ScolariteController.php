@@ -226,7 +226,7 @@ if ($etat == 'affecte'){
                                     , 'ajax' => false
                                     , 'target' => '_blank'
                                     , 'icon' => '%icon% fe fe-download'
-                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document']
+                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document','target' => '_blank']
                                     , 'render' =>$renders['imprimer']
 
                                 ],
@@ -273,7 +273,7 @@ if ($etat == 'affecte'){
                                     'url' => $this->generateUrl('fiche', ['id' => $value])
                                     , 'ajax' => false
                                     , 'icon' => '%icon% fe fe-download'
-                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document']
+                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document','target' => '_blank']
                                     , 'render' =>$renders['imprimer']
 
                                 ],
@@ -410,7 +410,7 @@ if ($etat == 'affecte'){
 
                             'actions' => [
 
-                                /*  'edit' => [
+                                  'edit' => [
                                      'url' => $this->generateUrl('scolarite_edit', ['id' => $value])
                                      , 'ajax' => true
                                      , 'icon' => '%icon% fe fe-edit'
@@ -418,7 +418,7 @@ if ($etat == 'affecte'){
                                      , 'render' => new ActionRender(function () use ($renders) {
                                          return $renders['edit'];
                                      })
-                                 ],*/
+                                 ],
                                  'details' => [
                                      'url' => $this->generateUrl('scolarite_show', ['id' => $value])
                                      , 'ajax' => true
@@ -445,7 +445,7 @@ if ($etat == 'affecte'){
                                     , 'ajax' => false
                                     , 'target' => '_blank'
                                     , 'icon' => '%icon% fe fe-download'
-                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document']
+                                    , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document', 'target' => '_blank']
                                     , 'render' =>$renders['imprimer']
 
                                 ],
@@ -528,7 +528,7 @@ if ($etat == 'affecte'){
     {
         $scolarite = new Scolarite();
 
-        $versement = new Versement();
+       /* $versement = new Versement();
         $format = $generateCode->setEntityClass(Versement::class)
             ->getData("VERS");
         $versement->setNumeroEtape(0)
@@ -536,7 +536,7 @@ if ($etat == 'affecte'){
             ->setLibelle("1 Paquet de rame + markers")
             ->setDateVersement(new \DateTime())
             ->setMontant(5000);
-        $scolarite->addVersement($versement);
+        $scolarite->addVersement($versement);*/
         $form = $this->createForm(ScolariteType::class,$scolarite, [
             'method' => 'POST',
             'action' => $this->generateUrl('scolarite_new')
@@ -684,8 +684,6 @@ if ($etat == 'affecte'){
     public function active($id,Scolarite $scolarite, EntityManagerInterface $entityManager): Response
     {
 
-
-
         if ($scolarite->getActive() == 1){
 
             $scolarite->setActive(0);
@@ -802,5 +800,8 @@ if ($etat == 'affecte'){
 
 
     }
+
+
+    
 
 }

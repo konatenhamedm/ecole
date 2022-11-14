@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Annee;
+use App\Repository\EleveRepository;
+use App\Repository\ScolariteRepository;
+use App\Repository\VersementRepository;
 use App\Service\GenerateCode;
 use App\Service\Services;
 use App\Entity\Classe;
@@ -89,9 +92,9 @@ class ClasseController extends AbstractController
             'edit' =>  new ActionRender(function () {
                 return true;
             }),
-            /*    'suivi' =>  new ActionRender(function () use ($etat) {
-                    return in_array($etat, ['cree']);
-                }),*/
+                'imprimer' =>  new ActionRender(function ()  {
+                    return true;
+                }),
             'delete' => new ActionRender(function (){
                 return true;
             }),
@@ -153,6 +156,15 @@ class ClasseController extends AbstractController
                                     return $renders['delete'];
                                 })
                             ],
+                            'imprimer' => [
+                                'url' => $this->generateUrl('fiche_liste', ['id' => $value])
+                                , 'ajax' => false
+                                , 'target' => '_blank'
+                                , 'icon' => '%icon% fe fe-download'
+                                , 'attrs' => ['class' => 'btn-info', 'title' => 'Imprimer document','target' => '_blank']
+                                , 'render' =>$renders['imprimer']
+
+                            ],
                         ]
                     ];
                     return $this->renderView('_includes/default_actions.html.twig', compact('options', 'context'));
@@ -174,6 +186,44 @@ class ClasseController extends AbstractController
     public function __construct(Security $security)
     {
         $this->security = $security->getUser()->getUserIdentifier();
+
+    }
+
+    /**
+     * @Route("/fiche/{id}", name="fiche_liste", methods={"GET","POST"})
+     * @param $id
+     * @param Request $request
+     * @param EleveRepository $eleveRepository
+     * @param ScolariteRepository $scolariteRepository
+     * @throws \Mpdf\MpdfException
+     */
+    public function imprimer($id, Request $request,Classe $classe, EleveRepository $eleveRepository,ScolariteRepository $scolariteRepository)
+    {
+
+//dd($membreRepository->find($id));
+
+        $html = $this->renderView('_admin/classe/imprimer.html.twig', [
+            'liste' => $eleveRepository->getListe($id),
+            'classe'=>$classe
+        ]);
+
+
+        //}
+        $mpdf = new \Mpdf\Mpdf([
+
+            'mode' => 'utf-8', 'format' => 'A4'
+        ]);
+        $mpdf->PageNumSubstitutions[] = [
+            'from' => 1,
+            'reset' => 0,
+            'type' => 'I',
+            'suppress' => 'on'
+        ];
+
+        $mpdf->WriteHTML($html);
+        $mpdf->SetFontSize(6);
+        $mpdf->Output();
+
 
     }
 

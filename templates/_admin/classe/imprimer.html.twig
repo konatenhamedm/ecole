@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no,
+                initial-scale=1.0,
+                maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Collège Gueye | Buval</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 10pt;
+            color: rgb(0, 25, 81);
+            font-weight: bold;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            color: whitesmoke;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .items th{
+            border: 1px solid #cccccc;
+            border-top: none;
+            text-align: left;
+            padding: 8px 3px;
+            font-size: 0.9em;
+        }
+        .info{
+            margin-left: 410px;
+            margin-top: -40px;
+        }
+        .info_dossier_facture{
+            margin-left: 380px;
+        }
+        p {	margin: 0pt; }
+        table.items {
+            border: 0.1mm solid #000000;
+        }
+        td { vertical-align: top; }
+        .items td {
+            border-left: 0.1mm solid #000000;
+            border-right: 0.1mm solid #000000;
+        }
+        table thead td { background-color: #EEEEEE;
+            text-align: center;
+            border: 0.1mm solid #000000;
+            font-variant: small-caps;
+        }
+
+        .items td.blanktotal {
+            background-color: #EEEEEE;
+            border: 0.1mm solid #002385;
+            background-color: #FFFFFF;
+            border: 0mm none #000000;
+            border-top: 0.1mm solid #000000;
+            border-right: 0.1mm solid #000000;
+        }
+        .items td.totals {
+            text-align: right;
+            border: 0.1mm solid #000000;
+        }
+        .items td.cost {
+            text-align:  right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="Titre" style="border: 1px solid #cccccc;
+              background-color: rgb(0, 25, 81);color: rgb(255, 197, 4);">
+            <p>
+            <h2 style="text-align: center">LISTE DES ELEVES {{ classe.libelle}} e | COLLEGE GUEYE DUVAL </h2>
+            </p>
+        </div>
+        <hr>
+
+        <div class="row" style="margin-top: 10px">
+            <table>
+                <tr style="background-color: rgb(0, 25, 81);
+                  color: rgb(255, 197, 4); font-size: 15px;">
+                    <th style="width:10px">N°</th>
+                    <th style="width:100px">Matricule.</th>
+                    <th style="width:150px">Nom</th>
+                    <th style="width:150px">Prenoms</th>
+                    <th style="width:100px">Date naissance </th>
+                    <th style="width:80px">Status </th>
+                    <th style="width:150px">Montant total </th>
+                    <th style="width:150px">Montant payé </th>
+                    <th style="width:150px">Montant restant </th>
+                </tr>
+                {% for key,eleve in liste %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ eleve.matricule }}</td>
+                    <td>{{ eleve.nom }}</td>
+                    <td>{{ eleve.prenoms }}</td>
+                    <td>{{ eleve.naissance | date("d/m/Y") }}</td>
+                    <td>
+                        {% if eleve.statut == "ELEVE_AFFECTE" %}
+                        Affecté
+                        {% else %}
+                            Non affecté
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if eleve.scolaritePersonne == 0 %}
+                        {{ eleve.scolarite | number_format(0, '.') }}
+                        {% else %}
+                            {{ eleve.scolaritePersonne | number_format(0, '.') }}
+                        {% endif %}
+                        Fcfa
+
+                    </td>
+                    <td>{{ eleve.paye | number_format(0, '.') }}</td>
+                    <td>
+                        {% if eleve.scolaritePersonne == 0 %}
+                            {{ eleve.reste_affecte | number_format(0, '.') }}
+                        {% else %}
+                            {{ eleve.reste_non_affecte | number_format(0, '.') }}
+                        {% endif %}
+                        Fcfa
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </table>
+
+            <br><br>
+            <div style="text-align:right; padding-right: 20px;">
+                <p>COLLEGE GUEYE DUVAL</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
